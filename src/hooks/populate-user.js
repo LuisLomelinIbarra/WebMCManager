@@ -6,7 +6,7 @@ module.exports = (options = {}) => {
   return async context => {
     const {app, method, result, params} = context;
     const addUser = async log =>{
-      //console.log("log userid", log.userId);
+      
       
       const user = await app.service('users').get(log.userId, params);
       return {

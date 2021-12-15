@@ -90,7 +90,7 @@ const showLogin = (error) =>{
 };
 
 const showHome = async () =>{
-    console.log("Start home");
+    
     document.getElementById('app').innerHTML = homehtml;
     
     const logs = await client.service('mchandler').find({query:{
@@ -105,7 +105,7 @@ const showHome = async () =>{
 const addLogs = log => {
     logdisp = document.querySelector('#logs');
     text = log.action == 'start' ? 'Server recived a start signal' : 'Server Recived a stopped signal';
-    //console.log(`<il> ${log.logDate} ::::  ${text} </li>`);
+    
     if(logdisp){
         logdisp.innerHTML += `<div> >>> ${log.logDate} ::::  ${text} </div><br>`;
     }
@@ -115,11 +115,11 @@ const addLogs = log => {
 const login = async (credentials) => {
     try {
         if(!credentials){
-            console.log("ReAuth Run");
+            
             await client.reAuthenticate().then(showHome()).catch(showLogin());
             
         }else{
-            console.log("Normal Auth Run");
+            
             await client.authenticate(
                 {
                     strategy: 'local',
@@ -179,13 +179,13 @@ addEventListener('#logout','click', async()=>{
 });
 
 addEventListener('#serverstart','click',async()=>{
-    console.log("Start server");
+    
     client.service('mchandler').create({action:'start'},{query:{action:'start'}});
     showHome();
 });
 
 addEventListener('#serverstop','click',async()=>{
-    console.log("Stop server");
+    
     client.service('mchandler').create({action:'stop'},{query:{action:'stop'}});
     showHome();
 });

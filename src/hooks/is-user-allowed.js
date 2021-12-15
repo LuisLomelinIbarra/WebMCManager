@@ -5,7 +5,7 @@
 module.exports = (options = {}) => {
   return async context => {
     const {app, params} = context;
-    console.log(params.user);
+    
     if(params.user.isAllowed == 'false'){
       throw new Error('User is not allowed to run the server yet!! Contact the admin for them to allow you to use this service');
     }
