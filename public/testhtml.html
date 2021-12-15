@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>A FeathersJS application</title>
+    <meta name="description" content="A FeathersJS server">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="lotus.css" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="">
+        <main class="sp-horiz-lg bg-grey">
+            <div class="sp-vert-lg txt-center">
+                <div class="row">
+                    
+                    <div class="col c2">
+                        <a href="#" id="logout" class="btn bg-blue txt-bold box" style="text-decoration:none;color:inherit;"> 
+                            <span>
+                                <span class="material-icons md-48">
+                                    logout
+                                </span> <h6>logout</h6>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="col c10"></div>
+                </div>
+                <h1 class="txt-center">Web Server Starter</h1>
+                <hr>
+                <div class="row">
+                    <div class="col c3">
+                        <div class="col txt-white">
+                            <div class="sp-vert-sm row"><a class="btn btn-lg bg-green txt-bold box" id="serverstart" style="text-decoration:none;color:inherit; "> Start Server </a></div>
+                            <div class="sp-vert-sm row"><a class="btn btn-lg bg-red txt-bold box" id="serverstop" style="text-decoration:none;color:inherit;"> Stop Server </a></div>
+                            <div class="sp-vert-md row"><span>Current Status: <div id="current"></div></span></div>
+                        </div>
+                    </div>
+                    <div class="sp-lg col c8 bg-black txt-light-gray box">
+                        <div class ="col"></div>
+                    </div>
+                </div>
+
+                
+            </div> 
+            
+        </main>
+
+    </div>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.js"></script>
+    <script src="//unpkg.com/@feathersjs/client@4.5.11/dist/feathers.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+    <!--<script src="app.js"></script>-->
+</body>
+</html>
+
+
