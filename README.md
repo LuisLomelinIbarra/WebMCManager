@@ -2,6 +2,8 @@
 
 > A web page for a mcserver
 
+The idea of this project is to put to test my knowledge in web dev and to help my friends have easier access to the minecraft server.
+
 ## About
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
