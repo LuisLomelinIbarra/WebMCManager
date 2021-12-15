@@ -28,6 +28,8 @@ exports.Mchandler = class Mchandler extends Service {
 
             bat.on('exit', (code) => {
                 isServerRunning = false;
+                
+                this.emit('mcserverstop',{action:'stopped'});
                 console.log(`Child exited with code ${code}`);
             });
             //handlecpross.setCProcess(bat);

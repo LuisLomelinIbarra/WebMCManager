@@ -6,7 +6,8 @@ const hooks = require('./mchandler.hooks');
 module.exports = function (app) {
   const options = {
     Model: createModel(app),
-    paginate: app.get('paginate')
+    paginate: app.get('paginate'),
+    events: ['mcserverstop']
   };
 
   // Initialize our service with any options it requires
@@ -14,6 +15,6 @@ module.exports = function (app) {
 
   // Get our initialized service so that we can register hooks
   const service = app.service('mchandler');
-
+  
   service.hooks(hooks);
 };

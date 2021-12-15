@@ -38,7 +38,7 @@ const loginhtml = `
 </main>`;
 
 const homehtml = `
-<main class="sp-horiz-lg bg-grey">
+<main class="sp-horiz-lg ">
 <div class="sp-vert-lg">
     <div class="row">
         
@@ -55,7 +55,7 @@ const homehtml = `
     </div>
     <h1 class="txt-center">Web Server Starter</h1>
     <hr>
-    <div class="row">
+    <div class="row bg-light-gray">
         <div class="col c3">
             <div class="col txt-white">
                 <div class="sp-vert-sm row">
@@ -64,7 +64,9 @@ const homehtml = `
                 <div class="sp-vert-sm row">
                     <a class="btn btn-lg bg-red txt-bold box" id="serverstop" style="text-decoration:none;color:inherit;"> Stop Server </a>
                 </div>
-                <div class="sp-vert-md row"><span>Current Status: <div id="current"></div></span></div>
+                
+                <div class="sp-vert-md row bg-dark-gray"><span class="sp-vert-md"><h4 class="txt-center">Current Status: </h4> <div class="txt-center" id="current"></div></span></div>
+                <hr> 
             </div>
         </div>
         <div class="sp-lg col c8 bg-black txt-light-gray box">
@@ -99,15 +101,25 @@ const showHome = async () =>{
     }});
     
     document.querySelector('#current').innerHTML = logs.serverStat ? '<div class ="btn bg-magenta txt-centered txt-light-grey"> Currently on!! </div>' : '<div class ="btn bg-cyan txt-centered"> Off </div>'; 
-    logs.data.reverse().forEach(addLogs);
+    logs.data.forEach(addLogs);
 };
 
 const addLogs = log => {
     logdisp = document.querySelector('#logs');
-    text = log.action == 'start' ? 'Server recived a start signal' : 'Server Recived a stopped signal';
+    text = log.action == 'start' ? '<span class="txt-green" > Server recived a start signal' : ' <span class="txt-red" >Server Recived a stopped signal';
+    const t = new Date(log.logDate);
+    const date = ('0' + t.getDate()).slice(-2);
+    const month = ('0' + (t.getMonth() + 1)).slice(-2);
+    const year = t.getFullYear();
+    const hours = ('0' + t.getHours()).slice(-2);
+    const minutes = ('0' + t.getMinutes()).slice(-2);
+    const seconds = ('0' + t.getSeconds()).slice(-2);
+    const time = `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
     
+
+
     if(logdisp){
-        logdisp.innerHTML += `<div> >>> ${log.logDate} ::::  ${text} </div><br>`;
+        logdisp.innerHTML += `<div> >>> <span class="txt-yellow" > ${time} </span> ::::   ${text} </span> </div><br>`;
     }
 
 };
@@ -181,11 +193,14 @@ addEventListener('#logout','click', async()=>{
 addEventListener('#serverstart','click',async()=>{
     
     client.service('mchandler').create({action:'start'},{query:{action:'start'}});
-    showHome();
+    
 });
 
 addEventListener('#serverstop','click',async()=>{
     
     client.service('mchandler').create({action:'stop'},{query:{action:'stop'}});
-    showHome();
+    
 });
+
+client.service('mchandler').on('created',showHome);
+client.service('mchandler').on('mcserverstop',showHome);
