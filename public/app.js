@@ -43,7 +43,7 @@ const homehtml = `
     <div class="row">
         
         <div class="col c2">
-            <a href="#" id="logout" class="btn bg-blue txt-bold box" style="text-decoration:none;color:inherit;"> 
+            <a href="#" id="logout" class="btn bg-blue txt-bold box no-inherit"> 
                 <span>
                     <span class="material-icons md-48">
                         logout
@@ -59,10 +59,10 @@ const homehtml = `
         <div class="col c3">
             <div class="col txt-white">
                 <div class="sp-vert-sm row">
-                    <a class="btn btn-lg bg-green txt-bold box" id="serverstart" style="text-decoration:none;color:inherit; "> Start Server </a>
+                    <a class="btn btn-lg bg-green txt-bold box no-inherit" id="serverstart"> Start Server </a>
                 </div>
                 <div class="sp-vert-sm row">
-                    <a class="btn btn-lg bg-red txt-bold box" id="serverstop" style="text-decoration:none;color:inherit;"> Stop Server </a>
+                    <a class="btn btn-lg bg-red txt-bold box no-inherit" id="serverstop" > Stop Server </a>
                 </div>
                 
                 <div class="sp-vert-md row bg-dark-gray"><span class="sp-vert-md"><h4 class="txt-center">Current Status: </h4> <div class="txt-center" id="current"></div></span></div>
@@ -79,6 +79,9 @@ const homehtml = `
 
 </main>
 `;
+
+
+
 
 const showLogin = (error) =>{
     

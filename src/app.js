@@ -23,8 +23,27 @@ const app = express(feathers())
 app.configure(configuration())
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet({
-  contentSecurityPolicy: false
+  contentSecurityPolicy: {
+    useDefaults: true,
+    
+    directives: {
+      'default-src':  ["'self'", 'http://fonts.gstatic.com'],
+      'font-src': ["'self'" , 'fonts.gstatic.com' , 'fonts.googleapis.com'],
+      'connect-src': ["'self'", 'ws:'],
+      'script-src' : ["'self'", 'cdnjs.cloudflare.com', 'unpkg.com', 'socket.io'],
+      'img-src': ["'self'", 'fonts.googleapis.com'],
+      'style-src': ["'self'", 'fonts.googleapis.com'],
+      'form-action' : "'none'", 
+      'frame-ancestors' : "'none'"
+    },
+  },
 }))
+/*
+app.use((req, res, next) => {
+  res.header('Content-Security-Policy', `default-src 'self' http://fonts.gstatic.com; font-src 'self' fonts.gstatic.com http://fonts.googleapis.com; connect-src 'self'; script-src 'self' cdnjs.cloudflare.com unpkg.com socket.io; img-src 'self' https://fonts.googleapis.com; style-src 'self' https://fonts.googleapis.com http://fonts.googleapis.com; form-action 'none'; frame-ancestors 'none';`);
+  next();
+});
+*/
 app.use(cors())
 app.use(compress())
 app.use(express.json())
@@ -48,6 +67,9 @@ app.configure(channels)
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound())
 app.use(express.errorHandler({ logger }))
+
+
+
 
 app.hooks(appHooks)
 
