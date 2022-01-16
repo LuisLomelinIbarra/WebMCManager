@@ -58,6 +58,13 @@ const homehtml = `
     <div class="row bg-light-gray">
         <div class="col c3">
             <div class="col txt-white">
+                <div class="sp-vert-sm row"> 
+                    <h5>Server Type</h5>
+                    <select id="sertype">
+                        <option value=0>Vanilla</option>
+                        <option value=1>Pixelmon</option>
+                    </select> 
+                </div>
                 <div class="sp-vert-sm row">
                     <a class="btn btn-lg bg-green txt-bold box no-inherit" id="serverstart"> Start Server </a>
                 </div>
@@ -102,8 +109,10 @@ const showHome = async () =>{
         $sort:{logDate: -1},
         $limit: 25
     }});
-    
-    document.querySelector('#current').innerHTML = logs.serverStat ? '<div class ="btn bg-magenta txt-centered txt-light-grey"> Currently on!! </div>' : '<div class ="btn bg-cyan txt-centered"> Off </div>'; 
+    console.log(logs.typeRun);
+    serverinfo = logs.serverStat ? '<div class ="btn bg-magenta txt-centered txt-light-grey"> Currently on!! </div>' : '<div class ="btn bg-cyan txt-centered"> Off </div>';
+    serverinfo += '<h5 class=" sp-vert-sm">Current Type running:</h5> <p class=" sp-vert-sm txt-centered">' + logs.typeRun+'</p>';
+    document.querySelector('#current').innerHTML =  serverinfo;
     logs.data.forEach(addLogs);
 };
 
@@ -194,8 +203,10 @@ addEventListener('#logout','click', async()=>{
 });
 
 addEventListener('#serverstart','click',async()=>{
+    var sel = document.getElementById('sertype');
+    console.log(sel.value);
     
-    client.service('mchandler').create({action:'start'},{query:{action:'start'}});
+    client.service('mchandler').create({action:'start'},{query:{action:'start', server: sel.value}});
     
 });
 

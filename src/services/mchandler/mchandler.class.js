@@ -2,10 +2,12 @@ const { Console } = require('console');
 const { Service } = require('feathers-nedb');
 var bat;
 var isServerRunning = false;
+var serverList = ["vanilla","pixelmon"];
+var typeRunning = "None";
 exports.Mchandler = class Mchandler extends Service {
     create(data, params){
         console.log('hellos', params.query.action);
-        if(params.query.action == 'start'){
+        if(params.query.action == 'start' && params.query.server != null){
             //var handlecpross = require('../../helpers/child_status');
             if(isServerRunning){
                 const errors = require('@feathersjs/errors');
@@ -15,12 +17,13 @@ exports.Mchandler = class Mchandler extends Service {
             }
             isServerRunning = true;
             const { spawn } = require('child_process');
-            bat = spawn('cmd.exe', ['/c', process.cwd()+'/javaserver/run.bat'],{cwd: (process.cwd()+'/javaserver/')});
-            console.log( process.cwd() +'/javaserver/run.bat');
+            typeRunning = serverList[params.query.server];
+            bat = spawn('cmd.exe', ['/c', process.cwd()+'/javaserver/'+serverList[params.query.server]+'/run.bat'],{cwd: (process.cwd()+'/javaserver/'+serverList[params.query.server])});
+            console.log( process.cwd()+'/javaserver/'+serverList[params.query.server]+'/run.bat');
             bat.stdout.on('data', (data) => {
                 console.log(data.toString());
             });
-
+            process.stdin.pipe(bat.stdin);
             bat.stderr.on('data', (data) => {
                 console.error("ERROR_________________");
                 console.error(data.toString());
@@ -28,7 +31,7 @@ exports.Mchandler = class Mchandler extends Service {
 
             bat.on('exit', (code) => {
                 isServerRunning = false;
-                
+                typeRunning = "None";
                 this.emit('mcserverstop',{action:'stopped'});
                 console.log(`Child exited with code ${code}`);
             });
@@ -61,6 +64,7 @@ exports.Mchandler = class Mchandler extends Service {
     }
     find(params){
         params['serverStat'] = isServerRunning;
+        params['typeRun'] = typeRunning;
         return super.find(params);
     }
 };

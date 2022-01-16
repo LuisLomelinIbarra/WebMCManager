@@ -3,7 +3,7 @@ public class mockserver{
     
     public static void main(String args[]){
         String read = "";
-        System.out.println("Server started");
+        System.out.println("----------------------------------------------------\nVanilla Server started!!!\n\n");
         try{
             
             BufferedReader rl = new BufferedReader(new InputStreamReader(System.in));
