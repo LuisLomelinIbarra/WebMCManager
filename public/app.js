@@ -12,79 +12,98 @@ client.configure(
 //main();
 
 const loginhtml = `
-<main class="sp-horiz-lg" name="login" class="login heading">
-    <div class="sp-vert-lg txt-center">
-        <h1 class="txt-center">Login or Signup</h1>      
+<main name="login" class="login container-fluid">
+<div>
+        <h1 class="">Login or Signup</h1>      
         <hr>
-            <div class="col txt-left">        
-                <form>
-                    <label>
-                        Email              
-                        <input type="email" name="email" class="width-50" placeholder="email@domain.com"/>
-                    </label>
-                    <label>
-                        Password
-                        <input type="password" name="password" class="width-50" placeholder="A c00l p4$$w0rd" />
-                    </label>
-                    <label>
-                        <button class="btn bg-green width-50" id="login" type="button">Log in</button>
-                    </label>
-                    <label>
-                        <button class="btn bg-blue btn-m" id="signup" type="button">Sign Up and Login</button>
-                    </label>
-                </form>      
-            </div>
-        </div>
+        <form action="/">
+            <article>        
+            <header>
+                <label>
+                    Email              
+                    <input type="email" name="email" class="width-50" placeholder="email@domain.com"/>
+                </label>
+                <label>
+                    Password
+                    <input type="password" name="password" class="width-50" placeholder="A c00l p4$$w0rd" />
+                </label>
+            </header>
+            <label>
+                <button id="login" type="button">Log in</button>
+            </label>
+            <footer>
+                <label>
+                    <button class="secondary outline" id="signup" type="button">Sign Up and Login</button>
+                </label>
+            </footer>  
+            </article>
+        </form>
+    </div>
 </main>`;
 
 const homehtml = `
-<main class="sp-horiz-lg ">
-<div class="sp-vert-lg">
-    <div class="row">
-        
-        <div class="col c2">
-            <a href="#" id="logout" class="btn bg-blue txt-bold box no-inherit"> 
-                <span>
-                    <span class="material-icons md-48">
-                        logout
-                    </span> <h6>logout</h6>
-                </span>
-            </a>
-        </div>
-        <div class="col c10"></div>
+
+<main class="container-fluid">
+    <br>
+    <div>
+        <a href="#" id="logout" class="secondary" role="button"> 
+            <i data-feather="log-out">  </i> Logout
+        </a>
     </div>
-    <h1 class="txt-center">Web Server Starter</h1>
-    <hr>
-    <div class="row bg-light-gray">
-        <div class="col c3">
-            <div class="col txt-white">
-                <div class="sp-vert-sm row"> 
-                    <h5>Server Type</h5>
-                    <select id="sertype">
-                        <option value=0>Vanilla</option>
-                        <option value=1>Pixelmon</option>
-                    </select> 
-                </div>
-                <div class="sp-vert-sm row">
-                    <a class="btn btn-lg bg-green txt-bold box no-inherit" id="serverstart"> Start Server </a>
-                </div>
-                <div class="sp-vert-sm row">
-                    <a class="btn btn-lg bg-red txt-bold box no-inherit" id="serverstop" > Stop Server </a>
-                </div>
-                
-                <div class="sp-vert-md row bg-dark-gray"><span class="sp-vert-md"><h4 class="txt-center">Current Status: </h4> <div class="txt-center" id="current"></div></span></div>
-                <hr> 
+    <br>
+    <div><h1>Web Server Starter</h1></div><br>
+    <div class="grid">
+    <article class="grid">
+        <nav>
+        <div >
+            
+            <div>
+                <h5>Server Type</h5>
+                <select id="sertype">
+                    
+                </select> 
             </div>
-        </div>
-        <div class="sp-lg col c8 bg-black txt-light-gray box">
-            <div id="logs" class="scroll"></div>
-        </div>
+            <div>
+                <button id="serverstart" > Start Server </button>
+            </div>
+            <span>
+            <div >
+                <button id="serverstop" class="secondary"> Stop Server </button>
+            </div>
+            
+            <div>
+                <span >
+                <h4>
+                    Current Status: 
+                </h4> 
+                <div id="current"></div></span>
+            </div>
+        
+    </nav>
+
+        <article data-theme="dark">
+            <header>
+            
+            Server Recent activity
+            
+            </header>
+            
+            
+                
+                
+                    <div class="container-fluid contrast scroll"   id="logs"> </div>
+                    
+                    
+                    
+                </div>
+            
+        </article>
+
     </div>
+    </article>
 
-    
-</div> 
+</main><br>
 
-</main>
 `;
 
 
@@ -97,7 +116,7 @@ const showLogin = (error) =>{
     }else{
         document.getElementById('app').innerHTML = loginhtml;
     }
-
+    feather.replace()
     
 };
 
@@ -110,15 +129,38 @@ const showHome = async () =>{
         $limit: 25
     }});
     console.log(logs.typeRun);
-    serverinfo = logs.serverStat ? '<div class ="btn bg-magenta txt-centered txt-light-grey"> Currently on!! </div>' : '<div class ="btn bg-cyan txt-centered"> Off </div>';
-    serverinfo += '<h5 class=" sp-vert-sm">Current Type running:</h5> <p class=" sp-vert-sm txt-centered">' + logs.typeRun+'</p>';
+    document.querySelector('#sertype').innerHTML = "";
+    logs.serverlist.forEach(addOptions)
+    serverinfo = logs.serverStat ? '<button class ="contrast"> Currently on!! </button>' : '<button class ="contrast bold outline" disabled> Off </button>';
+    serverinfo += '<h5 class=" sp-vert-sm">Current Type running:</h5> <button class="secondary contrast" disabled> <em>' + logs.typeRun+'</em></button>';
     document.querySelector('#current').innerHTML =  serverinfo;
     logs.data.forEach(addLogs);
+    feather.replace()
 };
+
+const updateHome = async () =>{
+    const logs = await client.service('mchandler').find({query:{
+        $sort:{logDate: -1},
+        $limit: 25
+    }});
+    serverinfo = logs.serverStat ? '<button class ="contrast"> Currently on!! </button>' : '<button class ="contrast bold outline" disabled> Off </button>';
+    serverinfo += '<h5 class=" sp-vert-sm">Current Type running:</h5> <button class="secondary contrast" disabled> <em>' + logs.typeRun+'</em></button>';
+    document.querySelector('#current').innerHTML =  serverinfo;
+    document.querySelector('#logs').innerHTML = "";
+    logs.data.forEach(addLogs);
+}
+
+const addOptions = (option,indx) => {
+    selecttag = document.querySelector('#sertype')
+    if(selecttag){
+        selecttag.innerHTML += `<option value=${indx}> ${option} </option>`
+    }
+}
+
 
 const addLogs = log => {
     logdisp = document.querySelector('#logs');
-    text = log.action == 'start' ? '<span class="txt-green" > Server recived a start signal' : ' <span class="txt-red" >Server Recived a stopped signal';
+    text = log.action == 'start' ? '<ins> Server Started </ins>' : ' <b> Server Stopped </b>';
     const t = new Date(log.logDate);
     const date = ('0' + t.getDate()).slice(-2);
     const month = ('0' + (t.getMonth() + 1)).slice(-2);
@@ -128,10 +170,10 @@ const addLogs = log => {
     const seconds = ('0' + t.getSeconds()).slice(-2);
     const time = `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
     
-
+    
 
     if(logdisp){
-        logdisp.innerHTML += `<div> >>> <span class="txt-yellow" > ${time} </span> ::::   ${text} </span> </div><br>`;
+        logdisp.innerHTML += `<div> <small> >>>  ${time} </small> ::::   ${text}  </div><br>`;
     }
 
 };
@@ -181,6 +223,9 @@ const addEventListener = (selector, event, handler) => {
 }
 
 
+addEventListener('#themebtn','click',async()=>{
+    feather.replace();
+});
 
 addEventListener('#signup','click', async()=>{
     const credentials = getCredentials();
@@ -216,5 +261,5 @@ addEventListener('#serverstop','click',async()=>{
     
 });
 
-client.service('mchandler').on('created',showHome);
-client.service('mchandler').on('mcserverstop',showHome);
+client.service('mchandler').on('created',updateHome);
+client.service('mchandler').on('mcserverstop',updateHome);

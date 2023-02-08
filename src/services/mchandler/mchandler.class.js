@@ -1,8 +1,10 @@
 const { Console } = require('console');
 const { Service } = require('feathers-nedb');
+const config = require("../../../config/mcserverconfig.json");
+const errors = require('@feathersjs/errors');
 var bat;
 var isServerRunning = false;
-var serverList = ["vanilla","pixelmon"];
+var serverList = config.serverlist;
 var typeRunning = "None";
 exports.Mchandler = class Mchandler extends Service {
     create(data, params){
@@ -10,7 +12,7 @@ exports.Mchandler = class Mchandler extends Service {
         if(params.query.action == 'start' && params.query.server != null){
             //var handlecpross = require('../../helpers/child_status');
             if(isServerRunning){
-                const errors = require('@feathersjs/errors');
+                
                 const serverAlredyAvailable = new errors.GeneralError(new Error('Server is currently running'));
 
                 return  Promise.reject(serverAlredyAvailable);
@@ -39,7 +41,7 @@ exports.Mchandler = class Mchandler extends Service {
         }
         if(params.query.action == 'stop'){
             if(!isServerRunning){
-                const errors = require('@feathersjs/errors');
+                
                 const serverNotAvailable = new errors.GeneralError(new Error('Server is not currently running'));
 
                 return  Promise.reject(serverNotAvailable);
@@ -65,6 +67,7 @@ exports.Mchandler = class Mchandler extends Service {
     find(params){
         params['serverStat'] = isServerRunning;
         params['typeRun'] = typeRunning;
+        params['serverlist'] = serverList;
         return super.find(params);
     }
 };

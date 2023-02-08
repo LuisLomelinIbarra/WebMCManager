@@ -19,6 +19,7 @@ module.exports = (options = {}) => {
       result.data = await Promise.all(result.data.map(addUser));
       result['serverStat'] = params.serverStat;
       result['typeRun'] = params.typeRun;
+      result['serverlist'] = params.serverlist
     }else{
       context.result = await addUser(result);
     }
